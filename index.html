@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="src/css/variables.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <!-- Navbar stillerini direkt olarak yükle -->
+    <link rel="stylesheet" href="src/components/navbar/navbar.css">
+</head>
+<body>
+    <header id="navbar-container">
+        <!-- Navbar buraya yüklenecek -->
+    </header>
+
+    <main>
+        <!-- Diğer bölümler buraya gelecek -->
+    </main>
+
+    <script type="module">
+        import { NavbarComponent } from './src/components/navbar/navbar.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const navbar = new NavbarComponent();
+            await navbar.loadNavbar();
+        });
+    </script>
+</body>
+</html> 

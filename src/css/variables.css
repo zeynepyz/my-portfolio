@@ -1,0 +1,15 @@
+:root {
+    /* Light tema renkleri */
+    --primary-color: #007AFF;
+    --background-color: #FFFFFF;
+    --text-color: #1A1A1A;
+    --secondary-color: #F5F5F5;
+}
+
+body.dark {
+    /* Dark tema renkleri */
+    --primary-color: #0A84FF;
+    --background-color: #1A1A1A;
+    --text-color: #FFFFFF;
+    --secondary-color: #2C2C2C;
+} 
