@@ -7,8 +7,42 @@
 }
 
 .navbar-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+    position: relative;
+    width: 140px;
+    height: 30px;
+}
+
+.navbar-logo span {
+    font-size: 1rem;
+    background-color: rgb(115, 118, 115);
+    font-family: var(--font-family);
+    font-weight: var(--font-semibold);
+    color: rgb(145, 233, 14);
+    position: absolute;
+    cursor: pointer;
+    width: 15px;
+    transition: width 0.3s ease;
+    white-space: nowrap;
+}
+
+.navbar-logo::after {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.navbar-logo span.typing-effect {
+    width: 140px;
+    border-right: 2px solid var(--text-color);
+    animation: typing 2s steps(30);
+}
+
+@keyframes typing {
+    from { width: 15px; }
+    to { width: 140px; }
 }
 
 .navbar-links {

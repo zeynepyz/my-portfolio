@@ -6,7 +6,7 @@ export class NavbarComponent {
         this.navbarContainer = document.getElementById('navbar-container');
         this.navbarHTML = `
             <nav class="navbar">
-                <div class="navbar-logo">Logo</div>
+                <div class="navbar-logo"></div>
                 <ul class="navbar-links">
                     <li><a href="#home" data-lang="nav.home">Ana Sayfa</a></li>
                     <li><a href="#about" data-lang="nav.about">Hakkımda</a></li>
@@ -28,6 +28,7 @@ export class NavbarComponent {
         try {
             this.navbarContainer.innerHTML = this.navbarHTML;
             this.setupMobileMenu();
+            this.setupLogoEffect();
             
             // Tema ve dil yöneticilerini başlat
             this.themeManager = new ThemeManager();
@@ -35,6 +36,51 @@ export class NavbarComponent {
         } catch (error) {
             console.error('Navbar yüklenirken hata oluştu:', error);
         }
+    }
+
+    setupLogoEffect() {
+        const logoContainer = document.querySelector('.navbar-logo');
+        const logoText = document.createElement('span');
+        const cursor = document.createElement('span');
+        cursor.style.animation = 'blink 1s infinite';
+        
+        // Başlangıçta sadece yanıp sönen alt tire
+        logoText.textContent = '_';
+        logoContainer.appendChild(logoText);
+
+        let isTyping = false;
+        const text = 'zeynep@dev:~$';
+
+        logoContainer.addEventListener('mouseenter', () => {
+            if (isTyping) return;
+            isTyping = true;
+            
+            logoText.classList.add('typing-effect');
+            logoText.textContent = '';
+            
+            let charIndex = 0;
+            const typeChar = () => {
+                if (charIndex < text.length) {
+                    logoText.textContent += text.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeChar, 100);
+                } else {
+                    logoText.textContent += '_';
+                }
+            };
+            
+            typeChar();
+        });
+
+        logoContainer.addEventListener('mouseleave', () => {
+            if (!isTyping) return;
+            
+            setTimeout(() => {
+                logoText.classList.remove('typing-effect');
+                logoText.textContent = '_';
+                isTyping = false;
+            }, 1000);
+        });
     }
 
     setupMobileMenu() {
