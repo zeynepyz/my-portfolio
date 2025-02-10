@@ -33,6 +33,9 @@ export class TerminalComponent {
     ⠘⢿⣿⣿⣿⣿⣿⣿⣿⡿⠃
     ⠀⠀⠉⠛⠛⠛⠛⠛⠋⠀⠀
 `;
+
+        // Terminal geçmişini tutmak için yeni bir array
+        this.commandHistory = [];
     }
 
     async loadTranslations() {
@@ -85,6 +88,14 @@ export class TerminalComponent {
             if (event.key === 'Enter') {
                 const command = event.target.value.trim().toLowerCase();
                 
+                // Komut geçmişine ekle
+                this.commandHistory.push({
+                    command: command,
+                    type: waitingForExitConfirm ? 'exitResponse' : 'command',
+                    isExit: command === 'exit',
+                    isExitResponse: waitingForExitConfirm
+                });
+
                 if (waitingForExitConfirm) {
                     if (command === 'n' || command === 'no') {
                         terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n${this.translations[this.currentLang].terminal.commands.exitThanks}\n`;
@@ -98,6 +109,7 @@ export class TerminalComponent {
                 } else {
                     if (command === 'clear') {
                         terminalContent.innerHTML = "";
+                        this.commandHistory = []; // Geçmişi temizle
                         waitingForExitConfirm = false;
                     } else {
                         terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n`;
@@ -122,11 +134,41 @@ export class TerminalComponent {
             
             // Prompt'u güncelle
             prompt.textContent = this.translations[this.currentLang].terminal.prompt;
-            
-            // Eğer terminal boşsa veya sadece hoşgeldin mesajı varsa, yeni dildeki hoşgeldin mesajını göster
-            if (!terminalContent.innerHTML || terminalContent.innerHTML === this.translations[this.currentLang === 'tr' ? 'en' : 'tr'].terminal.welcome) {
+
+            // Terminal içeriğini yeni dilde yeniden oluştur
+            if (this.commandHistory.length === 0) {
+                // Sadece hoşgeldin mesajını göster
                 terminalContent.innerHTML = this.translations[this.currentLang].terminal.welcome;
+            } else {
+                // Geçmiş komutları yeni dilde yeniden oluştur
+                let newContent = this.translations[this.currentLang].terminal.welcome + '\n';
+                
+                this.commandHistory.forEach(entry => {
+                    const promptText = this.translations[this.currentLang].terminal.prompt;
+                    
+                    if (entry.type === 'exitResponse') {
+                        if (entry.command === 'n' || entry.command === 'no') {
+                            newContent += `\n${promptText} ${entry.command}\n${this.translations[this.currentLang].terminal.commands.exitThanks}\n`;
+                        } else if (entry.command === 'y' || entry.command === 'yes') {
+                            newContent += `\n${promptText} ${entry.command}\n${this.sadFace}\n`;
+                        } else {
+                            newContent += `\n${promptText} ${entry.command}\n${this.translations[this.currentLang].terminal.commands.notFound}\n`;
+                        }
+                    } else {
+                        newContent += `\n${promptText} ${entry.command}\n`;
+                        if (entry.command in this.commands) {
+                            newContent += this.commands[entry.command]() + '\n';
+                        } else if (entry.command !== 'clear') {
+                            newContent += this.translations[this.currentLang].terminal.commands.notFound + '\n';
+                        }
+                    }
+                });
+                
+                terminalContent.innerHTML = newContent;
             }
+            
+            // Scroll'u en alta getir
+            terminalContent.scrollTop = terminalContent.scrollHeight;
         });
     }
 } 
