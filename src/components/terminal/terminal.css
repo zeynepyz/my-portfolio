@@ -5,7 +5,7 @@
     transform: translate(-50%, 5%);
     width: 1000px;
     height: calc(100vh - 100px);
-    background-color: #000000;
+    background-color: var(--terminal-background-color);
     border: 2px solid var(--primary-color);
     border-radius: 6px;
     padding: 30px;
@@ -59,7 +59,7 @@
 }
 
 .terminal-content::-webkit-scrollbar-track {
-    background: #000000;
+    background: var(--terminal-background-color);
 }
 
 .terminal-content::-webkit-scrollbar-thumb {

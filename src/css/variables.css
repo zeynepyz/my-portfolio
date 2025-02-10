@@ -7,10 +7,11 @@
     --font-semibold: 600;
 
     /* Light tema renkleri */
-    --primary-color: #007AFF;
+    --primary-color: #b86dd5;
     --background-color: #FFFFFF;
     --text-color: #1A1A1A;
     --secondary-color: #F5F5F5;
+    --terminal-background-color: #f5c1f7;
 }
 
 body.dark {
@@ -21,4 +22,5 @@ body.dark {
     --secondary-color: #2C2C2C;
     --logo-text-color: rgb(145, 233, 14);
     --logo-background-color: rgb(115, 118, 115);
+    --terminal-background-color: #000000;
 } 
