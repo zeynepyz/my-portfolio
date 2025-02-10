@@ -1,14 +1,15 @@
 .terminal-container {
     position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%, 5%);
     width: 1000px;
-    height: 700px;
+    height: calc(100vh - 100px);
     background-color: #000000;
     border: 2px solid var(--primary-color);
     border-radius: 6px;
     padding: 30px;
-    z-index: 9999;
+    z-index: 998;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
@@ -71,12 +72,11 @@
 @media (min-width: 1921px) {
     .terminal-container {
         width: 1200px;
-        height: 800px;
-        left: 22%;
+        height: 700px;
     }
     
     .terminal-content {
-        height: 700px;
+        height: 600px;
         font-size: 22px;
     }
 }
@@ -85,8 +85,11 @@
 @media (max-width: 1920px) {
     .terminal-container {
         width: 1000px;
-        height: 700px;
-        left: 22%;
+        height: 600px;
+    }
+    .terminal-content {
+        height: 500px;
+        font-size: 22px;
     }
 }
 
@@ -95,7 +98,6 @@
     .terminal-container {
         width: 800px;
         height: 600px;
-        left: 20%;
     }
     
     .terminal-content {
@@ -113,8 +115,6 @@
     .terminal-container {
         width: 90%;
         height: 500px;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
         padding: 20px;
     }
     
@@ -130,10 +130,10 @@
 }
 
 /* Tablet dikey */
-@media (max-width: 768px) {
+@media (max-width: 576px) {
     .terminal-container {
         position: relative;
-        top: 0;
+        top: 30px;
         left: 0;
         transform: none;
         width: 100%;
@@ -142,6 +142,7 @@
         border-right: none;
         border-radius: 0;
         padding: 15px;
+        margin-top: 10px;
     }
     
     .terminal-content {
@@ -149,42 +150,3 @@
         font-size: 16px;
     }
 }
-
-/* Büyük mobil */
-@media (max-width: 576px) {
-    .terminal-container {
-        height: 350px;
-        padding: 10px;
-    }
-    
-    .terminal-content {
-        height: 250px;
-        font-size: 14px;
-    }
-    
-    .terminal-input-line {
-        font-size: 14px;
-        padding: 6px;
-    }
-}
-
-/* Küçük mobil */
-@media (max-width: 375px) {
-    .terminal-container {
-        height: 300px;
-    }
-    
-    .terminal-content {
-        height: 200px;
-        font-size: 12px;
-    }
-    
-    .terminal-input-line {
-        font-size: 12px;
-        padding: 5px;
-    }
-    
-    .terminal-input {
-        font-size: 12px;
-    }
-} 
