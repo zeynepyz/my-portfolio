@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="src/css/style.css">
     <!-- Navbar stillerini direkt olarak yükle -->
     <link rel="stylesheet" href="src/components/navbar/navbar.css">
+    <link rel="stylesheet" href="src/components/terminal/terminal.css">
 </head>
 <body>
     <header id="navbar-container">
@@ -25,10 +26,14 @@
 
     <script type="module">
         import { NavbarComponent } from './src/components/navbar/navbar.js';
+        import { TerminalComponent } from './src/components/terminal/terminal.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
             const navbar = new NavbarComponent();
             await navbar.loadNavbar();
+            
+            const terminal = new TerminalComponent();
+            terminal.init(document.getElementById('navbar-container'));
         });
     </script>
 </body>

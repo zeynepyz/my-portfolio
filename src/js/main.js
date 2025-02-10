@@ -2,11 +2,13 @@ import { ThemeManager } from './theme.js';
 import { LanguageManager } from './language.js';
 import { ProjectsManager } from './projects.js';
 import { AnimationManager } from './animations.js';
-import { NavbarComponent } from './components/navbar.js';
+import { NavbarComponent } from '../components/navbar/navbar.js';
+import { TerminalComponent } from '../components/terminal/terminal.js';
 
 class App {
     constructor() {
         this.navbar = new NavbarComponent();
+        this.terminal = new TerminalComponent();
         this.theme = new ThemeManager();
         this.lang = new LanguageManager();
         this.projects = new ProjectsManager();
@@ -15,7 +17,7 @@ class App {
 
     async init() {
         await this.navbar.loadNavbar();
-        // Diğer başlatma kodları
+        this.terminal.init(document.getElementById('navbar-container'));
     }
 }
 
