@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
 }
 
 .navbar-logo {
@@ -14,10 +14,10 @@
 
 .navbar-logo span {
     font-size: 1rem;
-    background-color: rgb(115, 118, 115);
+    background-color: var(--logo-background-color);
     font-family: var(--font-family);
     font-weight: var(--font-semibold);
-    color: rgb(145, 233, 14);
+    color: var(--logo-text-color);
     position: absolute;
     cursor: pointer;
     width: 15px;
@@ -59,7 +59,7 @@
 }
 
 .navbar-links a:hover {
-    color: var(--primary-color);
+    color: var(--logo-text-color);
 }
 
 .navbar-controls {

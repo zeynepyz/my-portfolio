@@ -19,4 +19,6 @@ body.dark {
     --background-color: #1A1A1A;
     --text-color: #FFFFFF;
     --secondary-color: #2C2C2C;
+    --logo-text-color: rgb(145, 233, 14);
+    --logo-background-color: rgb(115, 118, 115);
 } 
