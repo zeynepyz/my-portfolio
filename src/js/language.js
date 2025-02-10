@@ -28,6 +28,12 @@ export class LanguageManager {
             this.currentLang = e.target.value;
             localStorage.setItem('language', this.currentLang);
             this.updateContent();
+            
+            // Dil değişikliği eventi
+            const event = new CustomEvent('languageChange', {
+                detail: { language: this.currentLang }
+            });
+            window.dispatchEvent(event);
         });
     }
 

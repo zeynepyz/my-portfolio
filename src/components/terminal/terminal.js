@@ -1,22 +1,27 @@
 export class TerminalComponent {
     constructor() {
+        this.currentLang = localStorage.getItem('language') || 'tr';
+        this.translations = {
+            tr: {},
+            en: {}
+        };
+
         this.terminalHTML = `
             <div class="terminal-container">
-                <div class="terminal-content">Welcome to Zeynep's Terminal Portfolio
-Type 'help' to see available commands</div>
+                <div class="terminal-content"></div>
                 <div class="terminal-input-line">
-                    <span class="terminal-prompt">zeynep@dev:~$</span>
+                    <span class="terminal-prompt"></span>
                     <input type="text" class="terminal-input" autofocus>
                 </div>
             </div>
         `;
 
         this.commands = {
-            "help": "Available commands: whoami, ls, clear, exit",
-            "whoami": "Zeynep Yavuz, Frontend Developer",
-            "ls": "projects/  about_me.txt  contact.txt",
-            "clear": "",
-            "exit": "You really want to quit? (y/n)"
+            "help": () => this.translations[this.currentLang].terminal.commands.help,
+            "whoami": () => this.translations[this.currentLang].terminal.commands.whoami,
+            "ls": () => this.translations[this.currentLang].terminal.commands.ls,
+            "clear": () => "",
+            "exit": () => this.translations[this.currentLang].terminal.commands.exitPrompt
         };
 
         // Üzgün surat ASCII art
@@ -30,7 +35,16 @@ Type 'help' to see available commands</div>
 `;
     }
 
-    init(headerElement) {
+    async loadTranslations() {
+        const trModule = await import('../../locales/tr.js');
+        const enModule = await import('../../locales/en.js');
+        this.translations.tr = trModule.default;
+        this.translations.en = enModule.default;
+    }
+
+    async init(headerElement) {
+        await this.loadTranslations();
+        
         // Mobil kontrol için
         const isMobile = window.innerWidth <= 768;
         
@@ -59,6 +73,11 @@ Type 'help' to see available commands</div>
         const terminal = document.querySelector('.terminal-container');
         const terminalContent = terminal.querySelector('.terminal-content');
         const terminalInput = terminal.querySelector('.terminal-input');
+        const prompt = terminal.querySelector('.terminal-prompt');
+
+        // Prompt ve hoşgeldin mesajını ayarla
+        prompt.textContent = this.translations[this.currentLang].terminal.prompt;
+        terminalContent.innerHTML = this.translations[this.currentLang].terminal.welcome;
 
         let waitingForExitConfirm = false;
 
@@ -68,31 +87,45 @@ Type 'help' to see available commands</div>
                 
                 if (waitingForExitConfirm) {
                     if (command === 'n' || command === 'no') {
-                        terminalContent.innerHTML += `\n$ zeynep@dev:~$ ${command}\nThanks for not leaving me! ❤️\n`;
+                        terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n${this.translations[this.currentLang].terminal.commands.exitThanks}\n`;
                         waitingForExitConfirm = false;
                     } else if (command === 'y' || command === 'yes') {
                         terminalContent.innerHTML = this.sadFace;
                         waitingForExitConfirm = false;
                     } else {
-                        terminalContent.innerHTML += `\n$ zeynep@dev:~$ ${command}\nPlease answer with 'y' or 'n'\n`;
+                        terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n${this.translations[this.currentLang].terminal.commands.notFound}\n`;
                     }
                 } else {
                     if (command === 'clear') {
                         terminalContent.innerHTML = "";
                         waitingForExitConfirm = false;
-                    } else if (command === 'exit') {
-                        terminalContent.innerHTML += `\n$ zeynep@dev:~$ ${command}\n${this.commands.exit}\n`;
-                        waitingForExitConfirm = true;
                     } else {
-                        terminalContent.innerHTML += `\n$ zeynep@dev:~$ ${command}\n`;
-                        terminalContent.innerHTML += this.commands[command] 
-                            ? this.commands[command] + '\n' 
-                            : 'Command not found\n';
+                        terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n`;
+                        terminalContent.innerHTML += (this.commands[command] ? this.commands[command]() : this.translations[this.currentLang].terminal.commands.notFound) + '\n';
+                        
+                        if (command === 'exit') {
+                            waitingForExitConfirm = true;
+                        }
                     }
                 }
                 
                 event.target.value = "";
                 terminalContent.scrollTop = terminalContent.scrollHeight;
+            }
+        });
+
+        // Dil değişikliğini dinle
+        window.addEventListener('languageChange', (e) => {
+            this.currentLang = e.detail.language;
+            const prompt = document.querySelector('.terminal-prompt');
+            const terminalContent = document.querySelector('.terminal-content');
+            
+            // Prompt'u güncelle
+            prompt.textContent = this.translations[this.currentLang].terminal.prompt;
+            
+            // Eğer terminal boşsa veya sadece hoşgeldin mesajı varsa, yeni dildeki hoşgeldin mesajını göster
+            if (!terminalContent.innerHTML || terminalContent.innerHTML === this.translations[this.currentLang === 'tr' ? 'en' : 'tr'].terminal.welcome) {
+                terminalContent.innerHTML = this.translations[this.currentLang].terminal.welcome;
             }
         });
     }
