@@ -41,11 +41,10 @@ export class NavbarComponent {
     setupLogoEffect() {
         const logoContainer = document.querySelector('.navbar-logo');
         const logoText = document.createElement('span');
-        const cursor = document.createElement('span');
-        cursor.style.animation = 'blink 1s infinite';
         
         // Başlangıçta sadece yanıp sönen alt tire
         logoText.textContent = '_';
+        logoText.classList.add('cursor-blink');
         logoContainer.appendChild(logoText);
 
         let isTyping = false;
@@ -55,6 +54,7 @@ export class NavbarComponent {
             if (isTyping) return;
             isTyping = true;
             
+            logoText.classList.remove('cursor-blink');
             logoText.classList.add('typing-effect');
             logoText.textContent = '';
             
@@ -66,6 +66,7 @@ export class NavbarComponent {
                     setTimeout(typeChar, 100);
                 } else {
                     logoText.textContent += '_';
+                    logoText.classList.add('cursor-blink');
                 }
             };
             
@@ -77,6 +78,7 @@ export class NavbarComponent {
             
             setTimeout(() => {
                 logoText.classList.remove('typing-effect');
+                logoText.classList.add('cursor-blink');
                 logoText.textContent = '_';
                 isTyping = false;
             }, 1000);

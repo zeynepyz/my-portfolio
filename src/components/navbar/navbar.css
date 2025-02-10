@@ -23,6 +23,7 @@
     width: 15px;
     transition: width 0.3s ease;
     white-space: nowrap;
+    padding: 2px 4px;
 }
 
 .navbar-logo::after {
@@ -32,6 +33,10 @@
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
+}
+
+.cursor-blink {
+    animation: blink 1s infinite;
 }
 
 .navbar-logo span.typing-effect {
