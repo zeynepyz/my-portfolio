@@ -24,6 +24,6 @@ export class ThemeManager {
     }
 
     updateToggleButton() {
-        this.themeToggle.textContent = this.currentTheme === 'light' ? '🌙' : '☀️';
+        this.themeToggle.textContent = this.currentTheme === 'light' ? '࣪ ִֶָ☾.' : '☼';
     }
 } 

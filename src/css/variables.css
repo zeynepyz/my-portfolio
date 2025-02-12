@@ -12,6 +12,10 @@
     --text-color: #1A1A1A;
     --secondary-color: #F5F5F5;
     --terminal-background-color: #f5c1f7;
+    --theme-toggle-light: #b86dd5;
+    --theme-toggle-light-hover: #9c4dba;
+    --theme-toggle-dark: #FFD700;
+    --theme-toggle-dark-hover: #FFA500;
 }
 
 body.dark {
