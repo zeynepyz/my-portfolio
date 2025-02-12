@@ -16,6 +16,7 @@
     --theme-toggle-light-hover: #9c4dba;
     --theme-toggle-dark: #FFD700;
     --theme-toggle-dark-hover: #FFA500;
+    --primary-color-rgb: 184, 109, 213; /* primary-color'un RGB değerleri */
 }
 
 body.dark {
