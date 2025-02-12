@@ -8,32 +8,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Diğer CSS dosyaları -->
+    <!-- CSS dosyaları -->
     <link rel="stylesheet" href="src/css/variables.css">
     <link rel="stylesheet" href="src/css/style.css">
-    <!-- Navbar stillerini direkt olarak yükle -->
     <link rel="stylesheet" href="src/components/navbar/navbar.css">
     <link rel="stylesheet" href="src/components/terminal/terminal.css">
+    <!-- Hero CSS'ini ekleyelim -->
+    <link rel="stylesheet" href="src/components/hero/hero.css">
 </head>
 <body>
-    <header id="navbar-container">
-        <!-- Navbar buraya yüklenecek -->
-    </header>
-
-    <main>
-        <!-- Diğer bölümler buraya gelecek -->
-    </main>
+    <div id="navbar-container"></div>
+    <main id="main-content"></main>
 
     <script type="module">
         import { NavbarComponent } from './src/components/navbar/navbar.js';
         import { TerminalComponent } from './src/components/terminal/terminal.js';
+        import { HeroComponent } from './src/components/hero/hero.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // Navbar'ı yükle
             const navbar = new NavbarComponent();
             await navbar.loadNavbar();
             
+            // Terminal'i yükle
             const terminal = new TerminalComponent();
-            terminal.init(document.getElementById('navbar-container'));
+            const navbarContainer = document.getElementById('navbar-container');
+            terminal.init(navbarContainer);
+            
+            // Hero'yu yükle
+            const hero = new HeroComponent();
+            hero.init();
         });
     </script>
 </body>
