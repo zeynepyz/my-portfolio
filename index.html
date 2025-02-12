@@ -18,6 +18,7 @@
 </head>
 <body>
     <div id="navbar-container"></div>
+    <div id="terminal-container" class="terminal-container"></div>
     <main id="main-content"></main>
 
     <script type="module">
@@ -26,18 +27,17 @@
         import { HeroComponent } from './src/components/hero/hero.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Navbar'ı yükle
+            // Önce navbar'ı yükle
             const navbar = new NavbarComponent();
             await navbar.loadNavbar();
             
-            // Terminal'i yükle
-            const terminal = new TerminalComponent();
-            const navbarContainer = document.getElementById('navbar-container');
-            terminal.init(navbarContainer);
-            
-            // Hero'yu yükle
+            // Sonra hero'yu yükle
             const hero = new HeroComponent();
             hero.init();
+            
+            // En son terminal'i yükle
+            const terminal = new TerminalComponent();
+            terminal.init(document.getElementById('terminal-container'));
         });
     </script>
 </body>

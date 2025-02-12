@@ -43,6 +43,31 @@ export class TerminalComponent {
         this.commandHistory = [];
     }
 
+    async init(container) {
+        if (!container) return;
+        
+        // Önce translations'ı yükle
+        await this.loadTranslations();
+        
+        // Terminal içeriğini oluştur
+        container.innerHTML = `
+            <div class="terminal-content"></div>
+            <div class="terminal-input-line">
+                <span class="terminal-prompt">${this.translations[this.currentLang].terminal.prompt}</span>
+                <input type="text" class="terminal-input" autofocus>
+            </div>
+        `;
+
+        this.terminalContent = container.querySelector('.terminal-content');
+        this.terminalInput = container.querySelector('.terminal-input');
+        
+        // Input olaylarını dinle
+        this.setupInputListeners();
+        
+        // Hoşgeldin mesajını göster
+        this.displayWelcomeMessage();
+    }
+
     async loadTranslations() {
         const trModule = await import('../../locales/tr.js');
         const enModule = await import('../../locales/en.js');
@@ -50,46 +75,10 @@ export class TerminalComponent {
         this.translations.en = enModule.default;
     }
 
-    async init(headerElement) {
-        await this.loadTranslations();
-        
-        // Mobil kontrol için
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-            // Mobilde navbar'ın hemen altına ekle
-            headerElement.insertAdjacentHTML('afterend', this.terminalHTML);
-        } else {
-            // Desktop'ta header içine ekle
-            headerElement.insertAdjacentHTML('beforeend', this.terminalHTML);
-        }
-
-        // Pencere boyutu değiştiğinde kontrol et
-        window.addEventListener('resize', () => {
-            const terminal = document.querySelector('.terminal-container');
-            if (window.innerWidth <= 768) {
-                if (terminal.parentElement === headerElement) {
-                    headerElement.after(terminal);
-                }
-            } else {
-                if (terminal.parentElement !== headerElement) {
-                    headerElement.appendChild(terminal);
-                }
-            }
-        });
-
-        const terminal = document.querySelector('.terminal-container');
-        const terminalContent = terminal.querySelector('.terminal-content');
-        const terminalInput = terminal.querySelector('.terminal-input');
-        const prompt = terminal.querySelector('.terminal-prompt');
-
-        // Prompt ve hoşgeldin mesajını ayarla
-        prompt.textContent = this.translations[this.currentLang].terminal.prompt;
-        terminalContent.innerHTML = this.translations[this.currentLang].terminal.welcome;
-
+    setupInputListeners() {
         let waitingForExitConfirm = false;
 
-        terminalInput.addEventListener('keypress', (event) => {
+        this.terminalInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 const command = event.target.value.trim().toLowerCase();
                 
@@ -103,22 +92,22 @@ export class TerminalComponent {
 
                 if (waitingForExitConfirm) {
                     if (command === 'n' || command === 'no') {
-                        terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n${this.translations[this.currentLang].terminal.commands.exitThanks}\n`;
+                        this.terminalContent.innerHTML += `\n${this.translations[this.currentLang].terminal.prompt} ${command}\n${this.translations[this.currentLang].terminal.commands.exitThanks}\n`;
                         waitingForExitConfirm = false;
                     } else if (command === 'y' || command === 'yes') {
-                        terminalContent.innerHTML = this.sadFace;
+                        this.terminalContent.innerHTML = this.sadFace;
                         waitingForExitConfirm = false;
                     } else {
-                        terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n${this.translations[this.currentLang].terminal.commands.notFound}\n`;
+                        this.terminalContent.innerHTML += `\n${this.translations[this.currentLang].terminal.prompt} ${command}\n${this.translations[this.currentLang].terminal.commands.notFound}\n`;
                     }
                 } else {
                     if (command === 'clear') {
-                        terminalContent.innerHTML = "";
+                        this.terminalContent.innerHTML = "";
                         this.commandHistory = []; // Geçmişi temizle
                         waitingForExitConfirm = false;
                     } else {
-                        terminalContent.innerHTML += `\n${prompt.textContent} ${command}\n`;
-                        terminalContent.innerHTML += (this.commands[command] ? this.commands[command]() : this.translations[this.currentLang].terminal.commands.notFound) + '\n';
+                        this.terminalContent.innerHTML += `\n${this.translations[this.currentLang].terminal.prompt} ${command}\n`;
+                        this.terminalContent.innerHTML += (this.commands[command] ? this.commands[command]() : this.translations[this.currentLang].terminal.commands.notFound) + '\n';
                         
                         if (command === 'exit') {
                             waitingForExitConfirm = true;
@@ -127,7 +116,7 @@ export class TerminalComponent {
                 }
                 
                 event.target.value = "";
-                terminalContent.scrollTop = terminalContent.scrollHeight;
+                this.terminalContent.scrollTop = this.terminalContent.scrollHeight;
             }
         });
 
@@ -175,5 +164,9 @@ export class TerminalComponent {
             // Scroll'u en alta getir
             terminalContent.scrollTop = terminalContent.scrollHeight;
         });
+    }
+
+    displayWelcomeMessage() {
+        this.terminalContent.innerHTML = this.translations[this.currentLang].terminal.welcome;
     }
 } 

@@ -10,7 +10,7 @@ export class HeroComponent {
                     </div>
                     <div class="hero-background">
                         <div class="cube-container">
-                            ${this.generateCubes(15)}
+                            ${this.generateCubes(5)}
                         </div>
                         <div class="particles"></div>
                     </div>
@@ -94,10 +94,26 @@ export class HeroComponent {
     setupTerminalTrigger() {
         const hero = document.querySelector('.hero-section');
         const terminal = document.querySelector('.terminal-container');
+        const hint = document.querySelector('.terminal-hint');
         
-        hero.addEventListener('click', () => {
-            terminal.classList.add('visible');
-            document.querySelector('.terminal-hint').style.display = 'none';
-        });
+        if (hero && terminal && hint) {
+            hero.addEventListener('click', () => {
+                if (terminal.classList.contains('visible')) {
+                    terminal.classList.remove('visible');
+                    hint.style.display = 'block';
+                } else {
+                    terminal.classList.add('visible');
+                    hint.style.display = 'none';
+                }
+            });
+
+            // ESC tuşu ile terminal'i kapatma
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && terminal.classList.contains('visible')) {
+                    terminal.classList.remove('visible');
+                    hint.style.display = 'block';
+                }
+            });
+        }
     }
 } 
