@@ -16,7 +16,7 @@
     height: 30px;
 }
 
-.navbar-logo span {
+.navbar-logo .typewriter {
     font-size: 1rem;
     background-color: var(--logo-background-color);
     font-family: var(--font-family);
@@ -24,34 +24,15 @@
     color: var(--logo-text-color);
     position: absolute;
     cursor: pointer;
-    width: 15px;
-    transition: width 0.3s ease;
-    white-space: nowrap;
     padding: 2px 4px;
-}
-
-.navbar-logo::after {
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-.cursor-blink {
-    animation: blink 1s infinite;
-}
-
-.navbar-logo span.typing-effect {
-    width: 140px;
+    white-space: nowrap;
     border-right: 2px solid var(--text-color);
-    animation: typing 2s steps(30);
+    animation: blink-caret 0.75s step-end infinite;
 }
 
-@keyframes typing {
-    from { width: 15px; }
-    to { width: 140px; }
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--text-color); }
 }
 
 .navbar-links {
@@ -119,6 +100,7 @@
     .navbar {
         padding: 1rem 2rem;
     }
+    
     .mobile-menu-btn {
         display: block;
     }
@@ -157,4 +139,4 @@
     background-color: var(--background-color);
     display: flex;
     justify-content: center;
-} 
+}

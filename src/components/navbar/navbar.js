@@ -41,48 +41,68 @@ export class NavbarComponent {
     setupLogoEffect() {
         const logoContainer = document.querySelector('.navbar-logo');
         const logoText = document.createElement('span');
+        logoText.classList.add('typewriter');
         
-        // Başlangıçta sadece yanıp sönen alt tire
-        logoText.textContent = '_';
-        logoText.classList.add('cursor-blink');
-        logoContainer.appendChild(logoText);
-
-        let isTyping = false;
         const text = 'zeynep@dev:~$';
+        let isHovering = false;
+        let animationTimeout;
+        let isTyping = true; // Yazma/silme durumunu takip etmek için
+        
+        logoContainer.appendChild(logoText);
+        logoText.textContent = '_';
 
-        logoContainer.addEventListener('mouseenter', () => {
-            if (isTyping) return;
+        function typeWriter(text, i = 0) {
+            if (!isHovering) return;
+            
+            if (i === 0) {
+                logoText.textContent = '';
+            }
+            
+            if (i < text.length) {
+                logoText.textContent += text.charAt(i);
+                animationTimeout = setTimeout(() => typeWriter(text, i + 1), 100);
+            } else {
+                // Yazma bittikten sonra bekle ve sil
+                animationTimeout = setTimeout(() => {
+                    isTyping = false;
+                    eraseText(text);
+                }, 400);
+            }
+        }
+
+        function eraseText(text, i = text.length) {
+            if (!isHovering) return;
+            
+            if (i > 0) {
+                logoText.textContent = text.substring(0, i - 1) + '_';
+                animationTimeout = setTimeout(() => eraseText(text, i - 1), 50);
+            } else {
+                // Silme bittikten sonra bekle ve tekrar yaz
+                animationTimeout = setTimeout(() => {
+                    isTyping = true;
+                    if (isHovering) {
+                        typeWriter(text);
+                    }
+                }, 1500);
+            }
+        }
+
+        function startAnimation() {
+            isHovering = true;
             isTyping = true;
-            
-            logoText.classList.remove('cursor-blink');
-            logoText.classList.add('typing-effect');
-            logoText.textContent = '';
-            
-            let charIndex = 0;
-            const typeChar = () => {
-                if (charIndex < text.length) {
-                    logoText.textContent += text.charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeChar, 100);
-                } else {
-                    logoText.textContent += '_';
-                    logoText.classList.add('cursor-blink');
-                }
-            };
-            
-            typeChar();
-        });
+            if (logoText.textContent === '_') {
+                typeWriter(text);
+            }
+        }
 
-        logoContainer.addEventListener('mouseleave', () => {
-            if (!isTyping) return;
-            
-            setTimeout(() => {
-                logoText.classList.remove('typing-effect');
-                logoText.classList.add('cursor-blink');
-                logoText.textContent = '_';
-                isTyping = false;
-            }, 1000);
-        });
+        function stopAnimation() {
+            isHovering = false;
+            clearTimeout(animationTimeout);
+            logoText.textContent = '_';
+        }
+        
+        logoContainer.addEventListener('mouseenter', startAnimation);
+        logoContainer.addEventListener('mouseleave', stopAnimation);
     }
 
     setupMobileMenu() {
