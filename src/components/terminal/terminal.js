@@ -26,13 +26,18 @@ export class TerminalComponent {
 
         // Üzgün surat ASCII art
         this.sadFace = `
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⡟⠁⠀⢸⣿⡇⠀⠈⢻
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⠘⢿⣿⣿⣿⣿⣿⣿⣿⡿⠃
-    ⠀⠀⠉⠛⠛⠛⠛⠛⠋⠀⠀
-`;
+　　　　　 　 ____
+　　　　　 ／＞　　フ
+　　　　　| 　_　 _ |
+　 　　　／\` ミ＿xノ
+　　 　 /　　　 　 |
+　　　 /　 ヽ　　 ﾉ
+　 　 │　　|　|　|
+　／￣|　　 |　|　|
+　| (￣ヽ＿ヽ)__)__)
+　＼二つ
+
+  That hurts my feelings`;
 
         // Terminal geçmişini tutmak için yeni bir array
         this.commandHistory = [];
