@@ -4,6 +4,7 @@
     overflow: hidden;
     background: var(--background-color);
     perspective: 1000px;
+    transition: transform 0.3s ease;
 }
 
 .hero-container {
@@ -156,4 +157,52 @@
     0% { opacity: 0.4; }
     50% { opacity: 0.8; }
     100% { opacity: 0.4; }
-} 
+}
+
+/* 1024px üstü ekranlar için yatay kayma */
+@media (min-width: 1024px) {
+    .hero-section.terminal-open {
+        transform: translateX(10%);
+        width: 70%;
+        float: right;
+    }
+}
+
+/* 1024px ve altı ekranlar için dikey kayma */
+@media (max-width: 1023px) {
+    .hero-section.terminal-open {
+        transform: translateY(50%);
+        width: 100%;
+        height: 50vh;
+        top: 300px;
+    }
+
+    /* Hero içeriğini yeni boyuta göre ayarla */
+    .hero-section.terminal-open .hero-content {
+        transform: scale(0.8);
+    }
+
+    /* Küpleri yeni boyuta göre ayarla */
+    .hero-section.terminal-open .cube {
+        transform: scale(0.6);
+    }
+}
+
+/* 1024px ve altı ekranlar için dikey kayma */
+@media (max-width: 576px) {
+    .hero-section.terminal-open {
+        transform: translateY(50%);
+        height: 30vh;
+        top: 0;
+    }
+
+    /* Hero içeriğini yeni boyuta göre ayarla */
+    .hero-section.terminal-open .hero-content {
+        transform: scale(0.9);
+    }
+
+    /* Küpleri yeni boyuta göre ayarla */
+    .hero-section.terminal-open .cube {
+        transform: scale(0.6);
+    }
+}

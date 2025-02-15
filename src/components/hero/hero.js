@@ -100,9 +100,11 @@ export class HeroComponent {
             hero.addEventListener('click', () => {
                 if (terminal.classList.contains('visible')) {
                     terminal.classList.remove('visible');
+                    hero.classList.remove('terminal-open');
                     hint.style.display = 'block';
                 } else {
                     terminal.classList.add('visible');
+                    hero.classList.add('terminal-open');
                     hint.style.display = 'none';
                 }
             });
@@ -111,6 +113,7 @@ export class HeroComponent {
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && terminal.classList.contains('visible')) {
                     terminal.classList.remove('visible');
+                    hero.classList.remove('terminal-open');
                     hint.style.display = 'block';
                 }
             });
