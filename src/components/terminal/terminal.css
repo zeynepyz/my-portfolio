@@ -167,8 +167,7 @@
 /* Mobil ekranlar için ek düzenlemeler */
 @media (max-width: 576px) {
     .terminal-container {
-        position: relative;
-        top: 90px;
+        top: 110px;
         left: 0;
         transform: none;
         width: 100%;
