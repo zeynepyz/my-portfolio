@@ -123,4 +123,29 @@ export class NavbarComponent {
             mobileMenuBtn.classList.toggle('active');
         });
     }
+
+    setupNavLinks() {
+        const navLinks = document.querySelectorAll('.navbar-links a');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Mobil menüyü kapat
+                    const navLinks = document.querySelector('.navbar-links');
+                    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+                    if (navLinks) navLinks.classList.remove('active');
+                    if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+                }
+            });
+        });
+    }
 } 

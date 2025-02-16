@@ -15,30 +15,19 @@
     <link rel="stylesheet" href="src/components/terminal/terminal.css">
     <!-- Hero CSS'ini ekleyelim -->
     <link rel="stylesheet" href="src/components/hero/hero.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- About CSS -->
+    <link rel="stylesheet" href="src/components/about/about.css">
 </head>
 <body>
     <div id="navbar-container"></div>
     <div id="terminal-container" class="terminal-container"></div>
-    <main id="main-content"></main>
+    <main id="main-content">
+        <section id="home"></section>
+        <section id="about"></section>
+    </main>
 
-    <script type="module">
-        import { NavbarComponent } from './src/components/navbar/navbar.js';
-        import { TerminalComponent } from './src/components/terminal/terminal.js';
-        import { HeroComponent } from './src/components/hero/hero.js';
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Önce navbar'ı yükle
-            const navbar = new NavbarComponent();
-            await navbar.loadNavbar();
-            
-            // Sonra hero'yu yükle
-            const hero = new HeroComponent();
-            hero.init();
-            
-            // En son terminal'i yükle
-            const terminal = new TerminalComponent();
-            terminal.init(document.getElementById('terminal-container'));
-        });
-    </script>
+    <script type="module" src="src/js/main.js"></script>
 </body>
 </html> 
