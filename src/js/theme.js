@@ -1,18 +1,21 @@
 export class ThemeManager {
     constructor() {
-        this.themeToggle = document.getElementById('themeToggle');
         this.currentTheme = localStorage.getItem('theme') || 'light';
-        
-        this.init();
     }
 
     init() {
-        // Sayfa yüklendiğinde kaydedilmiş temayı uygula
+        // Önce tema sınıfını ekle
         document.body.classList.add(this.currentTheme);
-        this.updateToggleButton();
-
-        // Tema değiştirme butonuna tıklama olayı ekle
-        this.themeToggle.addEventListener('click', () => this.toggleTheme());
+        
+        // Navbar yüklendikten sonra toggle butonunu bul
+        setTimeout(() => {
+            this.themeToggle = document.getElementById('themeToggle');
+            if (this.themeToggle) {
+                this.updateToggleButton();
+                // Tema değiştirme butonuna tıklama olayı ekle
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+            }
+        }, 100);
     }
 
     toggleTheme() {
@@ -24,6 +27,8 @@ export class ThemeManager {
     }
 
     updateToggleButton() {
-        this.themeToggle.textContent = this.currentTheme === 'light' ? '࣪ ִֶָ☾.' : '☼';
+        if (this.themeToggle) {
+            this.themeToggle.textContent = this.currentTheme === 'light' ? '࣪ ִֶָ☾.' : '☼';
+        }
     }
 } 
