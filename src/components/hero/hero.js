@@ -2,19 +2,19 @@ export class HeroComponent {
     constructor() {
         this.heroHTML = `
             <section class="hero-section" id="hero">
-                <div class="hero-container">
-                    <div class="hero-content">
-                        <h1 class="glitch" data-text="Zeynep Yavuz">Zeynep Yavuz</h1>
-                        <p class="hero-subtitle" data-lang="hero.role">Frontend Developer</p>
-                        <div class="terminal-hint">Click anywhere to open terminal</div>
-                    </div>
-                    <div class="hero-background">
-                        <div class="cube-container">
-                            ${this.generateCubes(5)}
-                        </div>
-                        <div class="particles"></div>
-                    </div>
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="glitch" data-text="Zeynep Yavuz">Zeynep Yavuz</h1>
+                    <p class="hero-subtitle" data-lang="hero.role">Frontend Developer</p>
+                    <div class="terminal-hint">Click anywhere to open terminal</div>
                 </div>
+                <div class="hero-background">
+                    <div class="cube-container">
+                        ${this.generateCubes(5)}
+                    </div>
+                    <div class="particles"></div>
+                </div>
+            </div>
             </section>
         `;
     }
@@ -54,11 +54,13 @@ export class HeroComponent {
     }
 
     init() {
-        const main = document.querySelector('main');
-        main.insertAdjacentHTML('afterbegin', this.heroHTML);
-        this.setupParallax();
-        this.setupGlitchEffect();
-        this.setupTerminalTrigger();
+        const homeSection = document.getElementById('home');
+        if (homeSection) {
+            homeSection.innerHTML = this.heroHTML;
+            this.setupParallax();
+            this.setupGlitchEffect();
+            this.setupTerminalTrigger();
+        }
     }
 
     setupParallax() {
