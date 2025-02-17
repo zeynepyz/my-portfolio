@@ -35,7 +35,16 @@
     top: 0;
     height: 100%;
     width: 2px;
-    background: var(--primary-color);
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(var(--primary-color-rgb), 0.3) 10%,
+        rgba(var(--primary-color-rgb), 0.6) 20%,
+        var(--primary-color) 50%,
+        rgba(var(--primary-color-rgb), 0.6) 80%,
+        rgba(var(--primary-color-rgb), 0.3) 90%,
+        transparent
+    );
 }
 
 .timeline-item {
@@ -58,6 +67,7 @@
     height: 12px;
     border-radius: 50%;
     background: var(--primary-color);
+    top: 25px;
 }
 
 .timeline-content {
@@ -140,4 +150,4 @@
     .experience-timeline {
         padding-right: 0;
     }
-} 
+}
