@@ -187,6 +187,9 @@ export class ProjectsComponent {
 
         // İlk yükleme için popup listener'larını ekle
         this.setupPopupListeners();
+
+        // Scroll animasyonları için
+        this.setupAnimations();
     }
 
     // Popup ile ilgili event listener'ları ayrı bir metoda taşıyalım
@@ -219,6 +222,21 @@ export class ProjectsComponent {
                     document.body.style.overflow = 'auto';
                 }
             });
+        });
+    }
+
+    // Yeni metod ekleyelim
+    setupAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.project-card').forEach(el => {
+            observer.observe(el);
         });
     }
 } 
