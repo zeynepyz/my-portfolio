@@ -70,6 +70,9 @@ export class ProjectsComponent {
                             <i class="fas fa-chevron-down"></i>
                         </button>` : ''}
                 </div>
+                <div class="popups-container">
+                    ${this.generatePopups()}
+                </div>
             </section>
         `;
     }
@@ -79,15 +82,52 @@ export class ProjectsComponent {
         return projectsToShow.map(project => this.createProjectCard(project)).join('');
     }
 
+    generatePopups() {
+        return this.projects.map(project => `
+            <div class="project-popup" id="popup-${project.id}">
+                <div class="popup-content">
+                    <button class="close-popup">&times;</button>
+                    <div class="project-image">
+                        <img src="${project.image}" alt="${project.title}">
+                    </div>
+                    <div class="project-details">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        <div class="project-technologies">
+                            ${project.technologies.map(tech => 
+                                `<span class="tech-tag">${tech}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="project-links">
+                            <a href="${project.sourceCode}" target="_blank" class="source-code-btn">
+                                <i class="fab fa-github"></i> Source Code
+                            </a>
+                            ${project.demoLink ? `
+                                <a href="${project.demoLink}" target="_blank" class="demo-btn">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
     createProjectCard(project) {
+        const shortDescription = project.description.length > 150 
+            ? project.description.substring(0, 150) + '...' 
+            : project.description;
+
         return `
-            <div class="project-card">
+            <div class="project-card" data-project-id="${project.id}">
                 <div class="project-image">
                     <img src="${project.image}" alt="${project.title}">
                 </div>
                 <div class="project-content">
                     <h3>${project.title}</h3>
-                    <p>${project.description}</p>
+                    <p class="project-description">${shortDescription}</p>
+                    <button class="read-more-btn">Devamını Oku</button>
                     <div class="project-technologies">
                         ${project.technologies.map(tech => 
                             `<span class="tech-tag">${tech}</span>`
@@ -139,7 +179,46 @@ export class ProjectsComponent {
                         card.style.animationDelay = `${index * 0.1}s`;
                     });
                 }
+
+                // Yeni kartlar için event listener'ları tekrar ekle
+                this.setupPopupListeners();
             });
         }
+
+        // İlk yükleme için popup listener'larını ekle
+        this.setupPopupListeners();
+    }
+
+    // Popup ile ilgili event listener'ları ayrı bir metoda taşıyalım
+    setupPopupListeners() {
+        // Popup için event listener'ları ekle
+        document.querySelectorAll('.read-more-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const card = e.target.closest('.project-card');
+                const projectId = card.getAttribute('data-project-id');
+                const popup = document.getElementById(`popup-${projectId}`);
+                if (popup) {
+                    popup.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        document.querySelectorAll('.close-popup').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const popup = e.target.closest('.project-popup');
+                popup.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        document.querySelectorAll('.project-popup').forEach(popup => {
+            popup.addEventListener('click', (e) => {
+                if (e.target === popup) {
+                    popup.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
     }
 } 
