@@ -4,6 +4,7 @@ import { NavbarComponent } from '../components/navbar/navbar.js';
 import { TerminalComponent } from '../components/terminal/terminal.js';
 import { HeroComponent } from '../components/hero/hero.js';
 import { AboutComponent } from '../components/about/about.js';
+import { ProjectsComponent } from '../components/projects/projects.js';
 
 class App {
     constructor() {
@@ -11,6 +12,7 @@ class App {
         this.terminal = new TerminalComponent();
         this.hero = new HeroComponent();
         this.about = new AboutComponent();
+        this.projects = new ProjectsComponent();
         this.theme = new ThemeManager();
         this.lang = new LanguageManager();
     }
@@ -30,6 +32,7 @@ class App {
             // Diğer komponentleri yükle
             this.hero.init();
             this.about.init();
+            this.projects.init();
             this.terminal.init(document.getElementById('terminal-container'));
 
         } catch (error) {
