@@ -62,7 +62,7 @@ export class ProjectsComponent {
                 <div class="projects-container">
                     <h2 class="section-title" data-lang="projects.title">Projeler</h2>
                     <div class="projects-grid">
-                        ${this.generateProjects()}
+                        ${this.generateAllProjects()}
                     </div>
                     ${this.projects.length > this.visibleProjects ? 
                         `<button class="toggle-projects-btn">
@@ -77,9 +77,12 @@ export class ProjectsComponent {
         `;
     }
 
-    generateProjects() {
-        const projectsToShow = this.isExpanded ? this.projects : this.projects.slice(0, this.visibleProjects);
-        return projectsToShow.map(project => this.createProjectCard(project)).join('');
+    generateAllProjects() {
+        return this.projects.map((project, index) => `
+            <div class="project-card ${index >= this.visibleProjects ? 'hidden' : ''}" data-project-id="${project.id}">
+                ${this.createProjectCardContent(project)}
+            </div>
+        `).join('');
     }
 
     generatePopups() {
@@ -114,35 +117,33 @@ export class ProjectsComponent {
         `).join('');
     }
 
-    createProjectCard(project) {
+    createProjectCardContent(project) {
         const shortDescription = project.description.length > 150 
             ? project.description.substring(0, 150) + '...' 
             : project.description;
 
         return `
-            <div class="project-card" data-project-id="${project.id}">
-                <div class="project-image">
-                    <img src="${project.image}" alt="${project.title}">
+            <div class="project-image">
+                <img src="${project.image}" alt="${project.title}">
+            </div>
+            <div class="project-content">
+                <h3>${project.title}</h3>
+                <p class="project-description">${shortDescription}</p>
+                <button class="read-more-btn">Devamını Oku</button>
+                <div class="project-technologies">
+                    ${project.technologies.map(tech => 
+                        `<span class="tech-tag">${tech}</span>`
+                    ).join('')}
                 </div>
-                <div class="project-content">
-                    <h3>${project.title}</h3>
-                    <p class="project-description">${shortDescription}</p>
-                    <button class="read-more-btn">Devamını Oku</button>
-                    <div class="project-technologies">
-                        ${project.technologies.map(tech => 
-                            `<span class="tech-tag">${tech}</span>`
-                        ).join('')}
-                    </div>
-                    <div class="project-links">
-                        <a href="${project.sourceCode}" target="_blank" class="source-code-btn">
-                            <i class="fab fa-github"></i> Source Code
+                <div class="project-links">
+                    <a href="${project.sourceCode}" target="_blank" class="source-code-btn">
+                        <i class="fab fa-github"></i> Source Code
+                    </a>
+                    ${project.demoLink ? `
+                        <a href="${project.demoLink}" target="_blank" class="demo-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
                         </a>
-                        ${project.demoLink ? `
-                            <a href="${project.demoLink}" target="_blank" class="demo-btn">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                        ` : ''}
-                    </div>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -159,8 +160,18 @@ export class ProjectsComponent {
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
                 this.isExpanded = !this.isExpanded;
-                const projectsGrid = document.querySelector('.projects-grid');
-                projectsGrid.innerHTML = this.generateProjects();
+                const hiddenCards = document.querySelectorAll('.project-card.hidden');
+                
+                hiddenCards.forEach((card, index) => {
+                    if (this.isExpanded) {
+                        card.classList.remove('hidden');
+                        // Yeni kartlar için animasyon gecikmesi
+                        card.style.transitionDelay = `${index * 0.1}s`;
+                    } else {
+                        card.classList.add('hidden');
+                        card.style.transitionDelay = '0s';
+                    }
+                });
                 
                 // Button text ve icon'u güncelle
                 const btnText = toggleBtn.querySelector('.btn-text');
@@ -171,17 +182,6 @@ export class ProjectsComponent {
                 // Animasyon için class ekle
                 toggleBtn.classList.add('clicked');
                 setTimeout(() => toggleBtn.classList.remove('clicked'), 300);
-
-                // Yeni eklenen kartların animasyonu için
-                if (this.isExpanded) {
-                    const newCards = document.querySelectorAll('.project-card');
-                    newCards.forEach((card, index) => {
-                        card.style.animationDelay = `${index * 0.1}s`;
-                    });
-                }
-
-                // Yeni kartlar için event listener'ları tekrar ekle
-                this.setupPopupListeners();
             });
         }
 
