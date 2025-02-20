@@ -160,18 +160,43 @@ export class ProjectsComponent {
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
                 this.isExpanded = !this.isExpanded;
-                const hiddenCards = document.querySelectorAll('.project-card.hidden');
+                const hiddenCards = document.querySelectorAll('.project-card:nth-child(n+4)');
                 
-                hiddenCards.forEach((card, index) => {
-                    if (this.isExpanded) {
+                if (this.isExpanded) {
+                    // Show More
+                    hiddenCards.forEach((card, index) => {
                         card.classList.remove('hidden');
-                        // Yeni kartlar için animasyon gecikmesi
-                        card.style.transitionDelay = `${index * 0.1}s`;
-                    } else {
-                        card.classList.add('hidden');
-                        card.style.transitionDelay = '0s';
-                    }
-                });
+                        // Önce opacity 0 ve transform ile başlangıç pozisyonunu ayarla
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        
+                        // Force reflow
+                        card.offsetHeight;
+                        
+                        // Sonra animasyon için stilleri uygula
+                        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    });
+                } else {
+                    // Show Less
+                    hiddenCards.forEach((card, index) => {
+                        const reverseIndex = hiddenCards.length - index - 1;
+                        card.style.transition = `all 0.5s ease ${reverseIndex * 0.1}s`;
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(-20px)';
+                    });
+                    
+                    // Animasyon bittikten sonra hidden class'ı ekle
+                    setTimeout(() => {
+                        hiddenCards.forEach(card => {
+                            card.classList.add('hidden');
+                            card.style.transition = '';
+                            card.style.opacity = '';
+                            card.style.transform = '';
+                        });
+                    }, hiddenCards.length * 100 + 500);
+                }
                 
                 // Button text ve icon'u güncelle
                 const btnText = toggleBtn.querySelector('.btn-text');
