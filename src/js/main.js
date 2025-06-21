@@ -5,6 +5,7 @@ import { TerminalComponent } from '../components/terminal/terminal.js';
 import { HeroComponent } from '../components/hero/hero.js';
 import { AboutComponent } from '../components/about/about.js';
 import { ProjectsComponent } from '../components/projects/projects.js';
+import { ContactComponent } from '../components/contact/contact.js';
 
 class App {
     constructor() {
@@ -15,29 +16,22 @@ class App {
         this.projects = new ProjectsComponent();
         this.theme = new ThemeManager();
         this.lang = new LanguageManager();
+        this.contact = new ContactComponent();
     }
 
     async init() {
-        try {
-            // Önce navbar'ı yükle
             await this.navbar.loadNavbar();
             
-            // Kısa bir bekleme ekleyelim
             await new Promise(resolve => setTimeout(resolve, 100));
             
-            // Tema ve dil yöneticilerini başlat
             this.theme.init();
             this.lang.init();
             
-            // Diğer komponentleri yükle
             this.hero.init();
             this.about.init();
             this.projects.init();
             this.terminal.init(document.getElementById('terminal-container'));
-
-        } catch (error) {
-            console.error('Uygulama başlatılırken hata:', error);
-        }
+            this.contact.init();
     }
 }
 

@@ -26,8 +26,12 @@ body {
 }
 
 section {
-    min-height: 100vh;
     width: 100%;
+}
+
+/* Sadece home section'ı için tam ekran yüksekliği kullanalım */
+#home {
+    min-height: 100vh;
 }
 
 /* Animasyonlar */

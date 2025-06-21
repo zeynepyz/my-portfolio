@@ -123,9 +123,6 @@ export class ProjectsComponent {
             : project.description;
 
         return `
-            <div class="project-image">
-                <img src="${project.image}" alt="${project.title}">
-            </div>
             <div class="project-content">
                 <h3>${project.title}</h3>
                 <p class="project-description">${shortDescription}</p>
@@ -163,10 +160,8 @@ export class ProjectsComponent {
                 const hiddenCards = document.querySelectorAll('.project-card:nth-child(n+4)');
                 
                 if (this.isExpanded) {
-                    // Show More
                     hiddenCards.forEach((card, index) => {
                         card.classList.remove('hidden');
-                        // Önce opacity 0 ve transform ile başlangıç pozisyonunu ayarla
                         card.style.opacity = '0';
                         card.style.transform = 'translateY(20px)';
                         
@@ -250,7 +245,6 @@ export class ProjectsComponent {
         });
     }
 
-    // Yeni metod ekleyelim
     setupAnimations() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {

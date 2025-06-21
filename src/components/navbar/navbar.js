@@ -25,7 +25,6 @@ export class NavbarComponent {
     }
 
     async loadNavbar() {
-        try {
             this.navbarContainer.innerHTML = this.navbarHTML;
             this.setupMobileMenu();
             this.setupLogoEffect();
@@ -33,9 +32,6 @@ export class NavbarComponent {
             // Tema ve dil yöneticilerini başlat
             this.themeManager = new ThemeManager();
             this.languageManager = new LanguageManager();
-        } catch (error) {
-            console.error('Navbar yüklenirken hata oluştu:', error);
-        }
     }
 
     setupLogoEffect() {
@@ -139,7 +135,6 @@ export class NavbarComponent {
                         behavior: 'smooth'
                     });
                     
-                    // Mobil menüyü kapat
                     const navLinks = document.querySelector('.navbar-links');
                     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
                     if (navLinks) navLinks.classList.remove('active');
